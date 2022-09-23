@@ -3,7 +3,7 @@ A Random maze behavior analyzer
 ===============================
 by moshix
  
-Prerequisities
+Pre-requisites
 ==============  
 
 pip install pyamaze  
