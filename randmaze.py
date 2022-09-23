@@ -10,7 +10,7 @@
 # v2.10 Print way more stats
 # v2.20 Fix stats 
 # v2.21 Stats now in the window itself
-# v2.50 Add fourth rat maze
+# v2.50 Add fourth maze rat
 
 try:
     from pyamaze import  maze,agent,COLOR,textLabel
@@ -168,7 +168,7 @@ def wallFollower3(m,focus):
         if m.maze_map[currCell][direction['forward']]==1 and wentstraight == False and k > focus:
               currCell,d=moveForward(currCell)                                
               path4+=d 
-              steps3=len(path4)
+              steps4=len(path4)
               if wentstraight == False:
                   wentstraight=True #to add more randomness in the block right below here
         else:
@@ -183,13 +183,13 @@ def wallFollower3(m,focus):
                 #print('move forward')
                 currCell,d=moveForward(currCell)
                 path4+=d
-                steps3=len(path4)
+                steps4=len(path4)
         else:
               #print('go left and forward')
               RCCW()
               currCell,d=moveForward(currCell)
               path4+=d
-              steps3=len(path4)
+              steps4=len(path4)
 
 
 
