@@ -1,4 +1,3 @@
-# randmaze
 A Random maze behavior analyzer 
 ===============================
 by moshix
