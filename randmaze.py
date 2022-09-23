@@ -11,6 +11,11 @@
 # v2.20 Fix stats 
 # v2.21 Stats now in the window itself
 # v2.50 Add fourth maze rat
+# v2.51 Fixed indicators
+# v2.60 Changed algorithm for rat #4
+#
+#
+# path1 = red, path2=green, path3=yellow, path4=blue
 
 try:
     from pyamaze import  maze,agent,COLOR,textLabel
@@ -218,6 +223,7 @@ def printStats():
 
 
 if __name__=='__main__':
+    print("Maze randomness analyzer - Version 2.60")
     irow = input("How many rows x columns: ")
     val = input("How focus shall red be (6-9, higher number more focussed): ")
     valint = int(val)
@@ -226,7 +232,7 @@ if __name__=='__main__':
     speed = int(speedval)
     loopval = input("Percentage of loops in maze: ")
     loop = int(loopval)
-    myMaze=maze(introws,introws+10)
+    myMaze=maze(introws,introws+15)
     myMaze.CreateMaze(loopPercent=loop)
     
     steps3=0
@@ -259,7 +265,7 @@ if __name__=='__main__':
     #print('Memory used by: path1(red): ',sizarray1,' - path2(green): ',sizarray2,' - path3(yellow): ',sizarray3)
     #print('Percentage of loops in maze: ',loop,' - maze size: ',introws,'x',introws+10)
     #print('Total memory used in Kbit: ',totsize)
-    ltstring = 'Number of elements for: path1: '+str(sizarray1)+' - path2(green): '+str(sizarray2)+' - path3(yellow): '+str(sizarray3)+'  path4(blue)'+str(sizarray4)+'    -  Memory used in Kbit: '+str(totsize)
+    ltstring = 'Number of elements for: red: '+str(sizarray1)+' - green: '+str(sizarray2)+' - yellow: '+str(sizarray3)+'  blue'+str(sizarray4)+'    -  Memory used in Kbit: '+str(totsize)
     l1=textLabel(myMaze,'Stats:',ltstring)
     
     #now execute the maze
