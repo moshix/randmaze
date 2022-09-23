@@ -10,6 +10,7 @@
 # v2.10 Print way more stats
 # v2.20 Fix stats 
 # v2.21 Stats now in the window itself
+# v2.50 Add fourth rat maze
 
 try:
     from pyamaze import  maze,agent,COLOR,textLabel
@@ -145,15 +146,71 @@ def wallFollower2(m,focus):
 #        path3=path3.replace('SN','')
     return path3
 
+
+#this is the fourth Maze Rat this requires the left wall to be open also for random forward North
+def wallFollower3(m,focus):
+    global direction
+    #steps4 is the counter for printStats
+    global steps4
+    steps4=0
+    wentstraight = False
+    d=0
+    direction={'forward':'N','left':'W','back':'S','right':'E'}
+    currCell=(m.rows,m.cols)
+    path4=''
+    while True:
+        
+        if currCell==(1,1):
+            break
+
+        k = random.randint(0, 10) 
+        
+        if m.maze_map[currCell][direction['forward']]==1 and wentstraight == False and k > focus:
+              currCell,d=moveForward(currCell)                                
+              path4+=d 
+              steps3=len(path4)
+              if wentstraight == False:
+                  wentstraight=True #to add more randomness in the block right below here
+        else:
+              wentstraight=False
+
+
+        if m.maze_map[currCell][direction['left']]==0:
+            if m.maze_map[currCell][direction['forward']]==0:
+                #print('turn right but not forward')
+                RCW()
+            else:
+                #print('move forward')
+                currCell,d=moveForward(currCell)
+                path4+=d
+                steps3=len(path4)
+        else:
+              #print('go left and forward')
+              RCCW()
+              currCell,d=moveForward(currCell)
+              path4+=d
+              steps3=len(path4)
+
+
+
+#   while 'EW' in path4 or 'WE' in path4 or 'NS' in path4 or 'SN' in path4:
+#        path4=path4.replace('EW','')
+#        path4=path4.replace('WE','')
+#        path4=path4.replace('NS','')
+#        path4=path4.replace('SN','')
+    return path4
+
 def printStats():
      global steps1
      global steps2
      global steps3
+     global steps4
      steps3=0
+     steps4=0
      while True:
         time.sleep(3)       
        
-        print('Stats update --  path1(red) elements',steps1,'  path2(green) elements: ',steps2,'  path3(yellow) elements: ',steps3)
+        print('Stats update --  path1(red) elements',steps1,'  path2(green) elements: ',steps2,'  path3(yellow) elements: ',steps3, '  path4(blue) elements:',steps4)
         
         if finished == True:
             break
@@ -173,6 +230,7 @@ if __name__=='__main__':
     myMaze.CreateMaze(loopPercent=loop)
     
     steps3=0
+    steps4=0
     t1 = threading.Thread(target=printStats, args=())
     t1.start()
     
@@ -180,22 +238,28 @@ if __name__=='__main__':
     a=agent(myMaze,filled=True,shape='square',footprints=True,color=COLOR.red)
     b=agent(myMaze,filled=True,shape='square',footprints=True,color=COLOR.green)
     c=agent(myMaze,filled=True,shape='square',footprints=True,color=COLOR.yellow)
+    d=agent(myMaze,filled=True,shape='square',footprints=True,color=COLOR.blue)
+
     path,path2=wallFollower(myMaze,valint)
     path3=wallFollower2(myMaze,valint-1) #make maze rat 3 most confused one
+    path4=wallFollower3(myMaze,valint-1)
+    
     finished=True 
-    myMaze.tracePath({a:path,b:path2,c:path3},delay=speed)
+    myMaze.tracePath({a:path,b:path2,c:path3,d:path4},delay=speed)
     arraylength=len(path)
     array2length=len(path2)
     array3length=len(path3)
-    print('Final count -- path1(red) elements',arraylength,'  path2(green) elements: ',array2length,'  path3(yellow) elements: ',array3length)
+    array4length=len(path4)
+    #print('Final count -- path1(red) elements',arraylength,'  path2(green) elements: ',array2length,'  path3(yellow) elements: ',array3length)
     sizarray1=sys.getsizeof(path)
     sizarray2=sys.getsizeof(path2)
     sizarray3=sys.getsizeof(path3)
+    sizarray4=sys.getsizeof(path4)
     totsize=int((sizarray1+sizarray2+sizarray3)/1024)
     #print('Memory used by: path1(red): ',sizarray1,' - path2(green): ',sizarray2,' - path3(yellow): ',sizarray3)
     #print('Percentage of loops in maze: ',loop,' - maze size: ',introws,'x',introws+10)
     #print('Total memory used in Kbit: ',totsize)
-    ltstring = 'Number of elements for: path1: '+str(sizarray1)+' - path2(green): '+str(sizarray2)+' - path3(yellow): '+str(sizarray3)+'  -  Memory used in Kbit: '+str(totsize)
+    ltstring = 'Number of elements for: path1: '+str(sizarray1)+' - path2(green): '+str(sizarray2)+' - path3(yellow): '+str(sizarray3)+'  path4(blue)'+str(sizarray4)+'    -  Memory used in Kbit: '+str(totsize)
     l1=textLabel(myMaze,'Stats:',ltstring)
     
     #now execute the maze
