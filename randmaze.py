@@ -265,7 +265,7 @@ if __name__=='__main__':
     #print('Memory used by: path1(red): ',sizarray1,' - path2(green): ',sizarray2,' - path3(yellow): ',sizarray3)
     #print('Percentage of loops in maze: ',loop,' - maze size: ',introws,'x',introws+10)
     #print('Total memory used in Kbit: ',totsize)
-    ltstring = 'Number of elements for: red: '+str(arraylength)+' - green: '+str(array2length)+' - yellow: '+str(array3length)+'  blue'+str(array4length)+'    -  Memory used in Kbit: '+str(totsize)
+    ltstring = 'Number of elements for: red: '+str(arraylength)+' - green: '+str(array2length)+' - yellow: '+str(array3length)+'  blue: '+str(array4length)+'    -  Memory used in Kbit: '+str(totsize)
     l1=textLabel(myMaze,'Stats:',ltstring)
     
     #now execute the maze
