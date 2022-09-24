@@ -215,7 +215,7 @@ def printStats():
      while True:
         time.sleep(3)       
        
-        print('Stats update --  path1(red) elements',steps1,'  path2(green) elements: ',steps2,'  path3(yellow) elements: ',steps3, '  path4(blue) elements:',steps4)
+        print('Stats update --  path1(red) elements: ',steps1,'  path2(green) elements: ',steps2,'  path3(yellow) elements: ',steps3, '  path4(blue) elements:',steps4)
         
         if finished == True:
             break
