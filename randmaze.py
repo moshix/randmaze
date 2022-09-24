@@ -266,7 +266,7 @@ if __name__=='__main__':
     #print('Percentage of loops in maze: ',loop,' - maze size: ',introws,'x',introws+10)
     #print('Total memory used in Kbit: ',totsize)
     ltstring = 'Number of elements for: red: '+str(arraylength)+' - green: '+str(array2length)+' - yellow: '+str(array3length)+'  blue: '+str(array4length)+'    -  Memory used in Kbit: '+str(totsize)
-    l1=textLabel(myMaze,'Stats:',ltstring)
-    
+    l1=textLabel(myMaze,'Stats:  ',ltstring)
+    l0=textLabel(myMaze,'Random Maze Analysis',' V2.60')
     #now execute the maze
     myMaze.run()
