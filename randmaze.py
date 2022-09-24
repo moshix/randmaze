@@ -261,7 +261,7 @@ if __name__=='__main__':
     sizarray2=sys.getsizeof(path2)
     sizarray3=sys.getsizeof(path3)
     sizarray4=sys.getsizeof(path4)
-    totsize=int((sizarray1+sizarray2+sizarray3)/1024)
+    totsize=int((sizarray1+sizarray2+sizarray3+sizarray4)/1024)
     #print('Memory used by: path1(red): ',sizarray1,' - path2(green): ',sizarray2,' - path3(yellow): ',sizarray3)
     #print('Percentage of loops in maze: ',loop,' - maze size: ',introws,'x',introws+10)
     #print('Total memory used in Kbit: ',totsize)
