@@ -13,7 +13,7 @@
 # v2.50 Add fourth maze rat
 # v2.51 Fixed indicators
 # v2.60 Changed algorithm for rat #4
-#
+# v2.70 Measure expired time for computation of rats
 #
 # path1 = red, path2=green, path3=yellow, path4=blue
 
@@ -223,7 +223,7 @@ def printStats():
 
 
 if __name__=='__main__':
-    print("Maze randomness analyzer - Version 2.60")
+    print("Maze randomness analyzer - Version 2.70")
     irow = input("How many rows x columns: ")
     val = input("How focus shall red be (6-9, higher number more focussed): ")
     valint = int(val)
@@ -246,10 +246,26 @@ if __name__=='__main__':
     c=agent(myMaze,filled=True,shape='square',footprints=True,color=COLOR.yellow)
     d=agent(myMaze,filled=True,shape='square',footprints=True,color=COLOR.blue)
 
+
+    start = time.time()
     path,path2=wallFollower(myMaze,valint)
+    end = time.time()
+    path12time=(end-start)
+
+    start = time.time()
     path3=wallFollower2(myMaze,valint-1) #make maze rat 3 most confused one
+    end = time.time()
+    path3time=(end-start)
+
+    start = time.time()
     path4=wallFollower3(myMaze,valint-1)
+    end = time.time()
+    path4time=(end-start)
     
+    path12timestr=time.strftime('%S', time.gmtime(path12time))
+    path3timestr=time.strftime('%S', time.gmtime(path3time))
+    path4timestr=time.strftime('%S', time.gmtime(path4time))
+    print("print12timestr value is: **********: '",path12timestr)
     finished=True 
     myMaze.tracePath({a:path,b:path2,c:path3,d:path4},delay=speed)
     arraylength=len(path)
@@ -265,8 +281,10 @@ if __name__=='__main__':
     #print('Memory used by: path1(red): ',sizarray1,' - path2(green): ',sizarray2,' - path3(yellow): ',sizarray3)
     #print('Percentage of loops in maze: ',loop,' - maze size: ',introws,'x',introws+10)
     #print('Total memory used in Kbit: ',totsize)
-    ltstring = 'Number of elements for: red: '+str(arraylength)+' - green: '+str(array2length)+' - yellow: '+str(array3length)+'  blue: '+str(array4length)+'    -  Memory used in Kbit: '+str(totsize)
+    ltstring = 'Number of elements for: red: '+str(arraylength)+', ecec time(sec): '+path12timestr+'  - green: '+str(array2length)+', exec time: '+ path12timestr+'  - yellow: '+str(array3length)+', exec time: '+path3timestr+'  - blue: '+str(array4length)+',exec time: '+path4timestr+'  --    Memory used in Kbit: '+str(totsize)
     l1=textLabel(myMaze,'Stats:  ',ltstring)
-    l0=textLabel(myMaze,'Random Maze Analysis',' V2.60')
+    l0=textLabel(myMaze,'Random Maze Analysis',' V2.70')
+    #myMaze.title('Random Maze Analysis')
+
     #now execute the maze
     myMaze.run()
