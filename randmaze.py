@@ -1,4 +1,4 @@
-#!/usr/local/bin/python3.7
+#!/usr/local/bin/python3.10
 # copyright 2022 by moshix
 # v0.01 Humble beginnings
 # v0.02 Make it do mazes
@@ -14,7 +14,7 @@
 # v2.51 Fixed indicators
 # v2.60 Changed algorithm for rat #4
 # v2.70 Measure expired time for computation of rats
-#
+# v2.80 Memory allocation monitoring and automatic sizing of maze
 # path1 = red, path2=green, path3=yellow, path4=blue
 
 try:
@@ -29,6 +29,31 @@ import random
 import threading
 import time
 import sys
+import tracemalloc
+
+class c:
+    BLUE = '\033[94m'
+    DARKBLUE = '\033[0;34m'
+    PURPLE = '\033[95m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    WHITE = '\033[1;37m'
+    ENDC = '\033[0m'
+    DARKGREY = '\033[1;30m'
+
+
+    def disable(self):
+        self.BLUE = ''
+        self.GREEN = ''
+        self.YELLOW = ''
+        self.DARKBLUE = ''
+        self.PURPLE = ''
+        self.WHITE= ''
+        self.RED = ''
+        self.ENDC = ''
+
+
 
 def RCW():
     global direction
@@ -215,7 +240,7 @@ def printStats():
      while True:
         time.sleep(3)       
        
-        print('Stats update --  path1(red) elements: ',steps1,'  path2(green) elements: ',steps2,'  path3(yellow) elements: ',steps3, '  path4(blue) elements:',steps4)
+        print('Stats elements: red: ',steps1,' green: ',steps2,'  yellow: ',steps3, ' blue:',steps4, 'mem: ',tracemalloc.get_traced_memory())
         
         if finished == True:
             break
@@ -223,18 +248,23 @@ def printStats():
 
 
 if __name__=='__main__':
-    print("Maze randomness analyzer - Version 2.70")
+
+    print(c.GREEN+"Maze randomness analyzer - "+c.RED+"Version 2.80")
     irow = input("How many rows x columns: ")
     val = input("How focus shall red be (6-9, higher number more focussed): ")
     valint = int(val)
     introws = int(irow)
+    icol=int(introws/5)*9
     speedval = input("How fast should the rats run (20-80): ")
     speed = int(speedval)
-    loopval = input("Percentage of loops in maze: ")
+    #loopval = input("Percentage of loops in maze: ")
+    loopval = 0
     loop = int(loopval)
-    myMaze=maze(introws,introws+15)
+    myMaze=maze(introws,introws+icol)
     myMaze.CreateMaze(loopPercent=loop)
     
+    tracemalloc.start()
+
     steps3=0
     steps4=0
     t1 = threading.Thread(target=printStats, args=())
@@ -266,7 +296,11 @@ if __name__=='__main__':
     path3timestr=time.strftime('%S', time.gmtime(path3time))
     path4timestr=time.strftime('%S', time.gmtime(path4time))
     print("print12timestr value is: **********: '",path12timestr)
+
     finished=True 
+    tracemalloc.stop()
+
+
     myMaze.tracePath({a:path,b:path2,c:path3,d:path4},delay=speed)
     arraylength=len(path)
     array2length=len(path2)
@@ -281,7 +315,7 @@ if __name__=='__main__':
     #print('Memory used by: path1(red): ',sizarray1,' - path2(green): ',sizarray2,' - path3(yellow): ',sizarray3)
     #print('Percentage of loops in maze: ',loop,' - maze size: ',introws,'x',introws+10)
     #print('Total memory used in Kbit: ',totsize)
-    ltstring = 'Number of elements for: red: '+str(arraylength)+', ecec time(sec): '+path12timestr+'  - green: '+str(array2length)+', exec time: '+ path12timestr+'  - yellow: '+str(array3length)+', exec time: '+path3timestr+'  - blue: '+str(array4length)+',exec time: '+path4timestr+'  --    Memory used in Kbit: '+str(totsize)
+    ltstring = 'Elements: red: '+str(arraylength)+', exec time(sec): '+path12timestr+'  - green: '+str(array2length)+', exec time: '+ path12timestr+'  - yellow: '+str(array3length)+', exec time: '+path3timestr+'  - blue: '+str(array4length)+',exec time: '+path4timestr+'  --    Memory used in Kbit: '+str(totsize)
     l1=textLabel(myMaze,'Stats:  ',ltstring)
     l0=textLabel(myMaze,'Random Maze Analysis',' V2.70')
     #myMaze.title('Random Maze Analysis')
