@@ -15,6 +15,7 @@
 # v2.60 Changed algorithm for rat #4
 # v2.70 Measure expired time for computation of rats
 # v2.80 Memory allocation monitoring and automatic sizing of maze
+# v2.90 optics
 # path1 = red, path2=green, path3=yellow, path4=blue
 
 try:
@@ -30,6 +31,7 @@ import threading
 import time
 import sys
 import tracemalloc
+import math
 
 class c:
     BLUE = '\033[94m'
@@ -231,6 +233,16 @@ def wallFollower3(m,focus):
     return path4
 
 def printStats():
+     BLUE = '\033[94m'
+     DARKBLUE = '\033[0;34m'
+     PURPLE = '\033[95m'
+     GREEN = '\033[92m'
+     YELLOW = '\033[93m'
+     RED = '\033[91m'
+     WHITE = '\033[1;37m'
+     ENDC = '\033[0m'
+     DARKGREY = '\033[1;30m'
+
      global steps1
      global steps2
      global steps3
@@ -239,8 +251,12 @@ def printStats():
      steps4=0
      while True:
         time.sleep(3)       
-       
-        print('Stats elements: red: ',steps1,' green: ',steps2,'  yellow: ',steps3, ' blue:',steps4, 'mem: ',tracemalloc.get_traced_memory())
+        mcurr, mpeak = tracemalloc.get_traced_memory()
+        mcurr = mcurr/(1024*1024)
+        mpeak = mpeak/(1024*1024)   
+        mcurr = round(mcurr, 1)
+        mpeak = round(mpeak, 1)
+        print(YELLOW+'Stats:: elements: '+GREEN+'red: ',steps1,' green: ',steps2,' yellow: ',steps3, ' blue:',steps4, ' ::memory curr/peak: ',BLUE,mcurr,'/',RED,mpeak,'MB')
         
         if finished == True:
             break
@@ -248,14 +264,13 @@ def printStats():
 
 
 if __name__=='__main__':
-
-    print(c.GREEN+"Maze randomness analyzer - "+c.RED+"Version 2.80")
+    print(c.GREEN+"Maze randomness analyzer - "+c.RED+"Version 2.90")
     irow = input("How many rows x columns: ")
     val = input("How focus shall red be (6-9, higher number more focussed): ")
     valint = int(val)
     introws = int(irow)
     icol=int(introws/5)*9
-    speedval = input("How fast should the rats run (20-80): ")
+    speedval = input("How fast should the rats run (0-120, zero is fastest): ")
     speed = int(speedval)
     #loopval = input("Percentage of loops in maze: ")
     loopval = 0
