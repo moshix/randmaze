@@ -16,6 +16,7 @@
 # v2.70 Measure expired time for computation of rats
 # v2.80 Memory allocation monitoring and automatic sizing of maze
 # v2.90 optics
+# v2.91 better output of statistics during run
 # path1 = red, path2=green, path3=yellow, path4=blue
 
 try:
@@ -231,6 +232,14 @@ def wallFollower3(m,focus):
 #        path4=path4.replace('NS','')
 #        path4=path4.replace('SN','')
     return path4
+def group(number):
+    s = '%d' % number
+    groups = []
+    while s and s[-1].isdigit():
+        groups.append(s[-3:])
+        s = s[:-3]
+    return s + ','.join(reversed(groups))
+
 
 def printStats():
      BLUE = '\033[94m'
@@ -256,7 +265,11 @@ def printStats():
         mpeak = mpeak/(1024*1024)   
         mcurr = round(mcurr, 1)
         mpeak = round(mpeak, 1)
-        print(YELLOW+'Stats:: elements: '+GREEN+'red: ',steps1,' green: ',steps2,' yellow: ',steps3, ' blue:',steps4, ' ::memory curr/peak: ',BLUE,mcurr,'/',RED,mpeak,'MB')
+        gsteps1=group(steps1)
+        gsteps2=group(steps2)
+        gsteps3=group(steps3)
+        gsteps4=group(steps4)
+        print(YELLOW+'Stats:: elements: '+GREEN+'red: ',gsteps1,' green: ',gsteps2,' yellow: ',gsteps3, ' blue:',gsteps4, ' ::memory curr/peak: ',BLUE,mcurr,'/',RED,mpeak,'MB')
         
         if finished == True:
             break
@@ -264,7 +277,7 @@ def printStats():
 
 
 if __name__=='__main__':
-    print(c.GREEN+"Maze randomness analyzer - "+c.RED+"Version 2.90")
+    print(c.GREEN+"Maze randomness analyzer - "+c.RED+"Version 2.91")
     irow = input("How many rows x columns: ")
     val = input("How focus shall red be (6-9, higher number more focussed): ")
     valint = int(val)
